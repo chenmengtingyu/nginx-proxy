@@ -18,5 +18,5 @@ server {
 sudo ln -s /etc/nginx/sites-available/filename /etc/nginx/sites-enabled/
 检查文件是否有效
 sudo nginx -t
-重新启动nginx
+重新加载nginx配置文件
 nginx -s reload
