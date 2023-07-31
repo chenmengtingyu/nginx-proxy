@@ -14,6 +14,35 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 }
+如果有SSL证书:
+server {
+    listen 80;
+    server_name pan.hasong.site;
+    access_log /var/log/nginx/access.log;
+
+    # 全部http流量重定向到https
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name pan.hasong.site;
+    access_log /var/log/nginx/access.log;
+
+    ssl_certificate /etc/nginx/ssl/ssl_certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl/ssl_certificate.key;
+
+    location / {
+        proxy_pass http://localhost:5244;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
 映射文件
 sudo ln -s /etc/nginx/sites-available/filename /etc/nginx/sites-enabled/
 检查文件是否有效
